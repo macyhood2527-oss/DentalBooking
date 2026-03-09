@@ -18,7 +18,7 @@ export default function Footer() {
             Contact
           </p>
           <div className="mt-3 space-y-2 text-sm text-[var(--muted)]">
-            <p>Email: brightsmileclinic@gmail.com</p>
+            <p>Email: mmarcelo.maxwell@gmail.com</p>
             <p>Phone: +63 945 6601 439</p>
           </div>
         </section>
@@ -37,7 +37,7 @@ export default function Footer() {
               Facebook
             </Link>
             <a
-              href="mailto:brightsmileclinic@gmail.com"
+              href="mailto:mmarcelo.maxwell@gmail.com"
               className="block transition hover:text-[var(--primary-dark)]"
             >
               Email
