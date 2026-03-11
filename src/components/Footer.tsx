@@ -2,7 +2,10 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-10 border-t border-[var(--border)] bg-white/55 backdrop-blur-md">
+    <footer
+      id="contact"
+      className="mt-10 border-t border-[var(--border)] bg-white/55 backdrop-blur-md"
+    >
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <section className="sm:col-span-2">
           <p className="text-lg font-semibold text-[var(--foreground)]">BrightSmile Dental Clinic</p>

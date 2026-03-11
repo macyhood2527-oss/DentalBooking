@@ -1,5 +1,6 @@
 "use client";
 
+import { Calendar, Home, Phone, Stethoscope } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { isAdminUser } from "../lib/admin";
@@ -45,33 +46,34 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/book", label: "Book" },
-    { href: "/appointments", label: "Appointments" },
-    { href: "/about", label: "About Us" },
+    { href: "/", label: "Home", icon: Home },
+    { href: "/#services", label: "Services", icon: Stethoscope },
+    { href: "/appointments", label: "Appointments", icon: Calendar },
+    { href: "/#contact", label: "Contact", icon: Phone },
   ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-white/55 shadow-sm backdrop-blur-md">
       <nav className="mx-auto max-w-6xl px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--accent)] text-lg text-white shadow-sm">
-            🦷
-          </div>
-          <div>
-            <p className="text-lg font-semibold text-[var(--foreground)]">BrightSmile</p>
-            <p className="text-xs text-[var(--muted)]">Dental Clinic</p>
-          </div>
-        </Link>
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--accent)] text-lg text-white shadow-sm">
+              🦷
+            </div>
+            <div>
+              <p className="text-lg font-semibold text-[var(--foreground)]">BrightSmile</p>
+              <p className="text-xs text-[var(--muted)]">Dental Clinic</p>
+            </div>
+          </Link>
 
           <div className="hidden items-center gap-2 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-xl px-3 py-2 text-sm font-medium text-[var(--muted)] transition hover:bg-[var(--background)] hover:text-[var(--primary-dark)]"
+                className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-[var(--muted)] transition hover:bg-[var(--background)] hover:text-[var(--primary-dark)]"
               >
+                <link.icon className="h-[18px] w-[18px] text-[var(--primary-dark)]" strokeWidth={1.8} />
                 {link.label}
               </Link>
             ))}
@@ -131,8 +133,9 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--muted)] transition hover:bg-[var(--background)] hover:text-[var(--primary-dark)]"
+                  className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[var(--muted)] transition hover:bg-[var(--background)] hover:text-[var(--primary-dark)]"
                 >
+                  <link.icon className="h-[18px] w-[18px] text-[var(--primary-dark)]" strokeWidth={1.8} />
                   {link.label}
                 </Link>
               ))}

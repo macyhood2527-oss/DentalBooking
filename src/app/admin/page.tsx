@@ -1,5 +1,6 @@
 "use client";
 
+import { BarChart, CalendarCheck, CircleCheckBig, Clock3, Users, XCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import AdminPageHeader from "../../components/AdminPageHeader";
 import AdminQuickActionCard from "../../components/AdminQuickActionCard";
@@ -122,6 +123,17 @@ export default function AdminDashboardPage() {
     return appointments.filter((row) => row.appointment_date === today);
   }, [appointments]);
 
+  const patientCount = useMemo(() => {
+    return new Set(
+      appointments
+        .map((row) => {
+          const profile = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
+          return profile?.full_name?.trim() || null;
+        })
+        .filter((name): name is string => Boolean(name))
+    ).size;
+  }, [appointments]);
+
   const statusStyles = useMemo(
     () => ({
       confirmed: "border-emerald-200 bg-emerald-50 text-emerald-700",
@@ -154,12 +166,45 @@ export default function AdminDashboardPage() {
         ) : (
           <>
             <section className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              <AdminStatCard label="Total Appointments" value={summary.total} />
-              <AdminStatCard label="Pending" value={summary.pending} tone="pending" />
-              <AdminStatCard label="Confirmed" value={summary.confirmed} tone="confirmed" />
-              <AdminStatCard label="Completed" value={summary.completed} tone="completed" />
-              <AdminStatCard label="Cancelled" value={summary.cancelled} tone="cancelled" />
-              <AdminStatCard label="Active Services" value={activeServices} />
+              <AdminStatCard
+                label="Appointments"
+                value={summary.total}
+                icon={<CalendarCheck className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Patients"
+                value={patientCount}
+                icon={<Users className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Reports"
+                value={activeServices}
+                icon={<BarChart className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Pending"
+                value={summary.pending}
+                tone="pending"
+                icon={<Clock3 className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Confirmed"
+                value={summary.confirmed}
+                tone="confirmed"
+                icon={<CalendarCheck className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Completed"
+                value={summary.completed}
+                tone="completed"
+                icon={<CircleCheckBig className="h-5 w-5" strokeWidth={1.8} />}
+              />
+              <AdminStatCard
+                label="Cancelled"
+                value={summary.cancelled}
+                tone="cancelled"
+                icon={<XCircle className="h-5 w-5" strokeWidth={1.8} />}
+              />
             </section>
 
             <section className="mb-2">

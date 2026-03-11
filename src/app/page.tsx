@@ -1,5 +1,14 @@
 "use client";
 
+import {
+  Armchair,
+  BadgeDollarSign,
+  ShieldPlus,
+  MapPin,
+  Phone,
+  Stethoscope,
+  Clock3,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import InsideBrightSmileGallery from "../components/InsideBrightSmileGallery";
@@ -189,7 +198,9 @@ export default function Home() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <article className="glass-card rounded-2xl p-5">
-            <p className="text-2xl">🩺</p>
+            <div className="inline-flex rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+              <Stethoscope className="h-6 w-6" strokeWidth={1.8} />
+            </div>
             <h3 className="mt-3 font-semibold text-[var(--foreground)]">Experienced Dentists</h3>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Skilled professionals focused on safe and quality treatment.
@@ -197,7 +208,9 @@ export default function Home() {
           </article>
 
           <article className="glass-card rounded-2xl p-5">
-            <p className="text-2xl">🦷</p>
+            <div className="inline-flex rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+              <ShieldPlus className="h-6 w-6" strokeWidth={1.8} />
+            </div>
             <h3 className="mt-3 font-semibold text-[var(--foreground)]">Modern Equipment</h3>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Updated tools for accurate diagnosis and effective procedures.
@@ -205,7 +218,9 @@ export default function Home() {
           </article>
 
           <article className="glass-card rounded-2xl p-5">
-            <p className="text-2xl">🛋️</p>
+            <div className="inline-flex rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+              <Armchair className="h-6 w-6" strokeWidth={1.8} />
+            </div>
             <h3 className="mt-3 font-semibold text-[var(--foreground)]">
               Comfortable Environment
             </h3>
@@ -215,7 +230,9 @@ export default function Home() {
           </article>
 
           <article className="glass-card rounded-2xl p-5">
-            <p className="text-2xl">💙</p>
+            <div className="inline-flex rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+              <BadgeDollarSign className="h-6 w-6" strokeWidth={1.8} />
+            </div>
             <h3 className="mt-3 font-semibold text-[var(--foreground)]">Affordable Care</h3>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Quality dental services with practical and fair pricing.
@@ -234,18 +251,33 @@ export default function Home() {
 
         <div className="grid gap-4 md:grid-cols-3">
           <article className="glass-card rounded-xl p-6 transition hover:shadow-xl">
-            <p className="text-lg font-semibold text-[var(--foreground)]">📍 Address</p>
+            <div className="flex items-center gap-3">
+              <div className="rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+                <MapPin className="h-5 w-5" strokeWidth={1.8} />
+              </div>
+              <p className="text-lg font-semibold text-[var(--foreground)]">Address</p>
+            </div>
             <p className="mt-3 text-[var(--muted)]">J. Catolico Avenue</p>
             <p className="text-[var(--muted)]">General Santos City</p>
           </article>
 
           <article className="glass-card rounded-xl p-6 transition hover:shadow-xl">
-            <p className="text-lg font-semibold text-[var(--foreground)]">📞 Phone</p>
+            <div className="flex items-center gap-3">
+              <div className="rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+                <Phone className="h-5 w-5" strokeWidth={1.8} />
+              </div>
+              <p className="text-lg font-semibold text-[var(--foreground)]">Phone</p>
+            </div>
             <p className="mt-3 text-[var(--muted)]">+63 945 6601 439</p>
           </article>
 
           <article className="glass-card rounded-xl p-6 transition hover:shadow-xl">
-            <p className="text-lg font-semibold text-[var(--foreground)]">🕒 Opening Hours</p>
+            <div className="flex items-center gap-3">
+              <div className="rounded-2xl bg-[var(--background)] p-3 text-[var(--primary-dark)]">
+                <Clock3 className="h-5 w-5" strokeWidth={1.8} />
+              </div>
+              <p className="text-lg font-semibold text-[var(--foreground)]">Opening Hours</p>
+            </div>
             <p className="mt-3 text-[var(--muted)]">Mon-Fri: 9:00 AM - 6:00 PM</p>
             <p className="text-[var(--muted)]">Sat: 9:00 AM - 3:00 PM</p>
             <p className="text-[var(--muted)]">Sun: Closed</p>

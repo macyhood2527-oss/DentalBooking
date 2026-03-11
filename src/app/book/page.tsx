@@ -1,5 +1,6 @@
 "use client";
 
+import { Calendar, ClipboardList, Clock, FileText, User } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
@@ -77,6 +78,7 @@ export default function BookingPage() {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [notes, setNotes] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [patientName, setPatientName] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
@@ -106,7 +108,14 @@ export default function BookingPage() {
         return;
       }
 
-      setUserId(userResult.data.user?.id ?? null);
+      const currentUser = userResult.data.user;
+      const metadataName =
+        typeof currentUser?.user_metadata?.full_name === "string"
+          ? currentUser.user_metadata.full_name.trim()
+          : "";
+
+      setUserId(currentUser?.id ?? null);
+      setPatientName(metadataName);
 
       if (servicesResult.error) {
         setErrorMessage(servicesResult.error.message);
@@ -394,33 +403,73 @@ export default function BookingPage() {
                 </p>
               </div>
 
-              {selectedService && (
-                <div className="mb-4 rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--primary-dark)]">
-                    Selected service
-                  </p>
-                  <p className="mt-1 font-semibold text-[var(--foreground)]">{selectedService.name}</p>
-                </div>
-              )}
-
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="appointment-date" className="mb-1.5 block text-sm font-medium">
+                  <label
+                    htmlFor="patient-name"
+                    className="mb-1.5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                  >
+                    <User className="h-5 w-5 text-[var(--primary-dark)]" strokeWidth={1.8} />
+                    Patient name
+                  </label>
+                  <div className="relative">
+                    <User
+                      className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--muted)]"
+                      strokeWidth={1.8}
+                    />
+                    <input
+                      id="patient-name"
+                      type="text"
+                      value={patientName}
+                      readOnly
+                      placeholder="Log in to load your name"
+                      className="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] py-3 pl-11 pr-3 text-[var(--foreground)] transition outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <p className="mb-1.5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]">
+                    <ClipboardList className="h-5 w-5 text-[var(--primary-dark)]" strokeWidth={1.8} />
+                    Service
+                  </p>
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--primary-dark)]">
+                      Selected service
+                    </p>
+                    <p className="mt-1 font-semibold text-[var(--foreground)]">
+                      {selectedService?.name || "Choose a service"}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="appointment-date"
+                    className="mb-1.5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                  >
+                    <Calendar className="h-5 w-5 text-[var(--primary-dark)]" strokeWidth={1.8} />
                     Date
                   </label>
-                  <input
-                    id="appointment-date"
-                    type="date"
-                    min={minDate}
-                    value={appointmentDate}
-                    onChange={(e) => {
-                      setMessage("");
-                      setErrorMessage("");
-                      setAppointmentDate(e.target.value);
-                    }}
-                    className="w-full rounded-xl border border-[var(--border)] bg-white p-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
-                    required
-                  />
+                  <div className="relative">
+                    <Calendar
+                      className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--muted)]"
+                      strokeWidth={1.8}
+                    />
+                    <input
+                      id="appointment-date"
+                      type="date"
+                      min={minDate}
+                      value={appointmentDate}
+                      onChange={(e) => {
+                        setMessage("");
+                        setErrorMessage("");
+                        setAppointmentDate(e.target.value);
+                      }}
+                      className="w-full rounded-xl border border-[var(--border)] bg-white py-3 pl-11 pr-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
+                      required
+                    />
+                  </div>
                   {unavailableDates.length > 0 && (
                     <p className="mt-2 text-xs text-[var(--muted)]">
                       Unavailable dates:{" "}
@@ -434,32 +483,42 @@ export default function BookingPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="appointment-time" className="mb-1.5 block text-sm font-medium">
+                  <label
+                    htmlFor="appointment-time"
+                    className="mb-1.5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                  >
+                    <Clock className="h-5 w-5 text-[var(--primary-dark)]" strokeWidth={1.8} />
                     Time
                   </label>
-                  <select
-                    id="appointment-time"
-                    value={appointmentTime}
-                    onChange={(e) => setAppointmentTime(e.target.value)}
-                    className="w-full rounded-xl border border-[var(--border)] bg-white p-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
-                    required
-                    disabled={!appointmentDate || loadingSlots || availableSlots.length === 0}
-                  >
-                    <option value="">
-                      {loadingSlots
-                        ? "Loading available slots..."
-                        : !appointmentDate
-                          ? "Select a date first"
-                          : availableSlots.length === 0
-                            ? "No available slots"
-                            : "Select a time slot"}
-                    </option>
-                    {availableSlots.map((slot) => (
-                      <option key={slot} value={slot}>
-                        {formatTime12(slot)}
+                  <div className="relative">
+                    <Clock
+                      className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--muted)]"
+                      strokeWidth={1.8}
+                    />
+                    <select
+                      id="appointment-time"
+                      value={appointmentTime}
+                      onChange={(e) => setAppointmentTime(e.target.value)}
+                      className="w-full rounded-xl border border-[var(--border)] bg-white py-3 pl-11 pr-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
+                      required
+                      disabled={!appointmentDate || loadingSlots || availableSlots.length === 0}
+                    >
+                      <option value="">
+                        {loadingSlots
+                          ? "Loading available slots..."
+                          : !appointmentDate
+                            ? "Select a date first"
+                            : availableSlots.length === 0
+                              ? "No available slots"
+                              : "Select a time slot"}
                       </option>
-                    ))}
-                  </select>
+                      {availableSlots.map((slot) => (
+                        <option key={slot} value={slot}>
+                          {formatTime12(slot)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   {appointmentDate && !loadingSlots && availableSlots.length === 0 && (
                     <p className="mt-2 text-sm text-[var(--muted)]">
                       No available slots for this date.
@@ -468,17 +527,27 @@ export default function BookingPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="appointment-notes" className="mb-1.5 block text-sm font-medium">
+                  <label
+                    htmlFor="appointment-notes"
+                    className="mb-1.5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                  >
+                    <FileText className="h-5 w-5 text-[var(--primary-dark)]" strokeWidth={1.8} />
                     Notes (optional)
                   </label>
-                  <textarea
-                    id="appointment-notes"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows={4}
-                    placeholder="Anything you'd like the clinic to know?"
-                    className="w-full rounded-xl border border-[var(--border)] bg-white p-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
-                  />
+                  <div className="relative">
+                    <FileText
+                      className="pointer-events-none absolute left-3 top-3 h-5 w-5 text-[var(--muted)]"
+                      strokeWidth={1.8}
+                    />
+                    <textarea
+                      id="appointment-notes"
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      rows={4}
+                      placeholder="Anything you'd like the clinic to know?"
+                      className="w-full rounded-xl border border-[var(--border)] bg-white py-3 pl-11 pr-3 transition outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[#99f6e4]"
+                    />
+                  </div>
                 </div>
 
                 <button

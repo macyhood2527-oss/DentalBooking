@@ -2,6 +2,7 @@ type AdminStatCardProps = {
   label: string;
   value: number;
   tone?: "default" | "pending" | "confirmed" | "completed" | "cancelled";
+  icon?: React.ReactNode;
 };
 
 const toneClassMap: Record<NonNullable<AdminStatCardProps["tone"]>, string> = {
@@ -24,13 +25,23 @@ export default function AdminStatCard({
   label,
   value,
   tone = "default",
+  icon,
 }: AdminStatCardProps) {
   return (
     <article className={`rounded-[22px] border bg-white p-5 ${toneClassMap[tone]}`}>
-      <p className={`text-xs font-semibold uppercase tracking-[0.12em] ${labelClassMap[tone]}`}>
-        {label}
-      </p>
-      <p className="mt-2 text-3xl font-bold text-[var(--foreground)]">{value}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className={`text-xs font-semibold uppercase tracking-[0.12em] ${labelClassMap[tone]}`}>
+            {label}
+          </p>
+          <p className="mt-2 text-3xl font-bold text-[var(--foreground)]">{value}</p>
+        </div>
+        {icon ? (
+          <div className="rounded-xl bg-[var(--background)] p-2 text-[var(--primary-dark)]">
+            {icon}
+          </div>
+        ) : null}
+      </div>
     </article>
   );
 }
